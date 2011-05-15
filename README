@@ -1,0 +1,40 @@
+eye-repl
+--------
+
+Simple JavaScript REPL for Safari on iPhone/iTouch
+by jeremy.ruten@gmail.com
+
+Why:
+
+  iPhone/iTouch has all sorts of great apps that let you draw, make music,
+  write notes and create documents, but there are no apps that let you write
+  and run programs, or even just mess around with a language. So we must resort
+  to writing our programs in Notes, with its humiliating font, with a keyboard
+  that places brackets & braces & math operators 3 clicks away, and then we
+  cram our programs into Safari's URL textbox via clipboard, as if our lives
+  depended on it. No, we just want to code. And in order to do so, we'll brave
+  the lousy variable-width font, the cumbersome keyboard, and the popups
+  required for input and output. Well, I knew I shouldn't have written this
+  section.
+
+Install:
+
+  On an iPhone/iTouch, in Safari, create a bookmark, then copy and paste
+  contents of eye-repl.js into the bookmark URL.
+
+Usage:
+
+  Type a unit of JavaScript code into the prompt, and see the result in the
+  next prompt. Your command history and results are displayed from bottom to
+  top, because the textarea can't scroll to the bottom automatically or
+  anything. Oh, type ":exit" to exit, or just click the cancel button on the
+  prompt. Oh, and make sure to type ":exit" WITH quotes, or it won't work. Heh,
+  just kidding. It actually won't work if you type it like that. Oh, hint: the
+  underscore (_) global is always set to the last result that was printed.
+
+Todo:
+
+  - Continued lines
+  - Reset
+  - Load libraries using AJAX
+  - CoffeeScript REPL
