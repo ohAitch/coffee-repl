@@ -56,14 +56,19 @@
     };
 
     REPL.prototype.read = function() {
-      return prompt(this.print());
+      var output;
+      output = prompt(this.print());
+      if (output === null) {
+        return this.exit();
+      } else {
+        return output;
+      }
     };
 
     REPL.prototype["eval"] = function(code) {
       var err;
       if (/^\:exit/.test(code)) {
-        this.exit();
-        return void 0;
+        return this.exit();
       } else if (/^\:help/.test(code)) {
         return "special variables:\n  $0\n  $1\n  $2\n  coffee_repl\nspecial commands:\n  :help\n  :exit";
       }

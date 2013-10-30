@@ -28,11 +28,15 @@ class REPL
     output = @eval(input)
     @history.add(input, output)
     if !@done then setTimeout => @loop()
-  read: -> prompt @print()
+  read: ->
+    output = prompt @print()
+    if output is null
+      @exit()
+    else
+      output
   eval: (code)->
     if /^\:exit/.test(code)
-      @exit()
-      return undefined
+      return @exit()
     else if /^\:help/.test(code)
       return """
         special variables:
