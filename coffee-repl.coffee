@@ -11,8 +11,8 @@ class REPL
     window.coffee_repl = @
     @done = false
     @history =
-      inputs: [""]
-      outputs: ["you can use command '$0', '$1', '$2' and ':exit'"]
+      inputs: [":help"]
+      outputs: ["type ':exit' to exit prompt."]
       add: (input, output)->
         @inputs.unshift(input)
         @outputs.unshift(output)
@@ -20,6 +20,9 @@ class REPL
         window.$1 = @outputs[1]
         window.$2 = @outputs[2]
         if @inputs.length > 3 then @inputs.length = @outputs.length = 3
+  start: ->
+    @done = false
+    @loop()
   loop: ->
     input = @read()
     output = @eval(input)
@@ -28,12 +31,25 @@ class REPL
   read: -> prompt @print()
   eval: (code)->
     if /^\:exit/.test(code)
-      @done = true
+      @exit()
       return undefined
+    else if /^\:help/.test(code)
+      return """
+        special variables:
+          $0
+          $1
+          $2
+          coffee_repl
+        special commands:
+          :help
+          :exit
+      """
     try
       eval CoffeeScript.compile(code, {bare:true})
     catch err
       ""+err
+  exit: ->
+    @done = true
   print: (input, output) ->
     "coffee> \n"+("coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n" for v,i in @history.inputs).join("")
   dump = (o, i=0) ->

@@ -22,8 +22,8 @@
       window.coffee_repl = this;
       this.done = false;
       this.history = {
-        inputs: [""],
-        outputs: ["you can use command '$0', '$1', '$2' and ':exit'"],
+        inputs: [":help"],
+        outputs: ["type ':exit' to exit prompt."],
         add: function(input, output) {
           this.inputs.unshift(input);
           this.outputs.unshift(output);
@@ -36,6 +36,11 @@
         }
       };
     }
+
+    REPL.prototype.start = function() {
+      this.done = false;
+      return this.loop();
+    };
 
     REPL.prototype.loop = function() {
       var input, output,
@@ -57,8 +62,10 @@
     REPL.prototype["eval"] = function(code) {
       var err;
       if (/^\:exit/.test(code)) {
-        this.done = true;
+        this.exit();
         return void 0;
+      } else if (/^\:help/.test(code)) {
+        return "special variables:\n  $0\n  $1\n  $2\n  coffee_repl\nspecial commands:\n  :help\n  :exit";
       }
       try {
         return eval(CoffeeScript.compile(code, {
@@ -68,6 +75,10 @@
         err = _error;
         return "" + err;
       }
+    };
+
+    REPL.prototype.exit = function() {
+      return this.done = true;
     };
 
     REPL.prototype.print = function(input, output) {
