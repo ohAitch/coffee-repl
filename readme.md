@@ -5,7 +5,7 @@ Simple CoffeeScript REPL Bookmarklet for Safari on iOS
 
 ## Install
 
-    javascript:(function(d,u,x,c,a){if(a[c])return;x=d.createElement("script");x.src=u;x.id=c;d.body.appendChild(x);}(document,"https://dl.dropboxusercontent.com/u/265158/GitHub/eye-repl/eye-repl.js",null,"eye-repl",this));
+    javascript:(function(d,u,x,c,a){if(a[c])return;x=d.createElement("script");x.src=u;x.id=c;d.body.appendChild(x);}(document,"https://dl.dropboxusercontent.com/u/265158/GitHub/eye-repl/coffee-repl.js",null,"coffee-repl",this));
 
 ## Usage
 

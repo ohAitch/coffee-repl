@@ -8,7 +8,6 @@ else
 
 class REPL
   constructor: ->
-    window.eye_repl = @
     @done = false
     @history =
       inputs: []
