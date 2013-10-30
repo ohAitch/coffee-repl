@@ -11,8 +11,8 @@ class REPL
     window.coffee_repl = @
     @done = false
     @history =
-      inputs: []
-      outputs: []
+      inputs: [""]
+      outputs: ["you can use command '$0', '$1', '$2' and ':exit'"]
       add: (input, output)->
         @inputs.unshift(input)
         @outputs.unshift(output)
@@ -27,7 +27,7 @@ class REPL
     if !@done then setTimeout => @loop()
   read: -> prompt @print()
   eval: (code)->
-    if /^exit/.test(code)
+    if /^\:exit/.test(code)
       @done = true
       return undefined
     try
@@ -35,7 +35,7 @@ class REPL
     catch err
       ""+err
   print: (input, output) ->
-    "coffee>_\n"+("coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n" for v,i in @history.inputs).join("")
+    "coffee> \n"+("coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n" for v,i in @history.inputs).join("")
   dump = (o, i=0) ->
     switch type(o)
       when "null", "number", "boolean", "undefined" then ""+o

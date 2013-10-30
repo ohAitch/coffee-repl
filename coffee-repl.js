@@ -22,8 +22,8 @@
       window.coffee_repl = this;
       this.done = false;
       this.history = {
-        inputs: [],
-        outputs: [],
+        inputs: [""],
+        outputs: ["you can use command '$0', '$1', '$2' and ':exit'"],
         add: function(input, output) {
           this.inputs.unshift(input);
           this.outputs.unshift(output);
@@ -56,7 +56,7 @@
 
     REPL.prototype["eval"] = function(code) {
       var err;
-      if (/^exit/.test(code)) {
+      if (/^\:exit/.test(code)) {
         this.done = true;
         return void 0;
       }
@@ -72,7 +72,7 @@
 
     REPL.prototype.print = function(input, output) {
       var i, v;
-      return "coffee>_\n" + ((function() {
+      return "coffee> \n" + ((function() {
         var _i, _len, _ref, _results;
         _ref = this.history.inputs;
         _results = [];
