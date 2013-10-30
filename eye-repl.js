@@ -1,47 +1,99 @@
-javascript:
 
 (function() {
-  var EyeREPL, History, repl;
-  var __hasProp = Object.prototype.hasOwnProperty, __slice = Array.prototype.slice;
-  EyeREPL = (function() {
-    function EyeREPL() {
+  var repl, script,
+    __slice = [].slice,
+    __hasProp = {}.hasOwnProperty;
+
+  script = document.createElement("script");
+
+  script.src = "http://coffeescript.org/extras/coffee-script.js";
+
+  script.onload = function() {
+    var e;
+    try {
+      return repl.start();
+    } catch (_error) {
+      e = _error;
+      return alert("Internal error:\n" + e.message);
+    }
+  };
+
+  document.body.appendChild(script);
+
+  repl = {
+    start: function() {
+      var i, input, result, _results;
+      this.callstack = 0;
       this.done = false;
-      this.history = new History;
+      this.history = {
+        lines: (function() {
+          var _i, _results;
+          _results = [];
+          for (i = _i = 1; _i <= 5; i = ++_i) {
+            _results.push("");
+          }
+          return _results;
+        })(),
+        add: function() {
+          var lines;
+          lines = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          this.lines.unshift(lines);
+          return this.lines.pop();
+        },
+        toString: function() {
+          return this.lines.join("\n");
+        }
+      };
       this.prompt = {
-        read: "js> ",
-        read_continued: "js. ",
+        read: "coffee> ",
+        read_continued: "coffee. ",
         result: "=> "
       };
-    }
-    EyeREPL.prototype.start = function() {
-      var input, result, _results;
       _results = [];
       while (!this.done) {
         input = this.read();
-        _results.push(!this.preprocess(input) ? (this.history.add(this.prompt.read + input), result = this.eval(input), result.success ? (window._ = result.value, this.print(this.prompt.result + this.inspect(result.value))) : this.print(result.error)) : void 0);
+        if (!this.preprocess(input)) {
+          this.history.add(this.prompt.read + input);
+          result = this["eval"](input);
+          if (result.success) {
+            window._ = result.value;
+            this.print(this.prompt.result + this.inspect(result.value));
+          } else {
+            this.print(result.error);
+          }
+          _results.push(this.callstack = 0);
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
-    };
-    EyeREPL.prototype.read = function() {
+    },
+    read: function() {
       return prompt(this.prompt.read + "\n" + this.history.toString());
-    };
-    EyeREPL.prototype.eval = function(code) {
-      var result;
+    },
+    "eval": function(code) {
+      var error, result;
       result = {};
       try {
-        result.value = eval(code);
+        result.value = eval(CoffeeScript.compile(code, {
+          bare: true
+        }));
         result.success = true;
-      } catch (error) {
+      } catch (_error) {
+        error = _error;
         result.error = error.message;
         result.success = false;
       }
       return result;
-    };
-    EyeREPL.prototype.print = function(line) {
+    },
+    print: function(line) {
       return this.history.add(line);
-    };
-    EyeREPL.prototype.inspect = function(obj) {
+    },
+    inspect: function(obj) {
       var el, key, s, value;
+      if (this.callstack++ > 10) {
+        return obj;
+      }
       switch (typeof obj) {
         case "number":
         case "boolean":
@@ -82,13 +134,12 @@ javascript:
           break;
         case "string":
           return "\"" + obj + "\"";
-          break;
         default:
           alert("Internal error");
-          return;
+          return void 0;
       }
-    };
-    EyeREPL.prototype.preprocess = function(input) {
+    },
+    preprocess: function(input) {
       var matches;
       if (input === null) {
         input = ":exit";
@@ -99,34 +150,10 @@ javascript:
       } else {
         return false;
       }
-    };
-    EyeREPL.prototype.exit = function() {
+    },
+    exit: function() {
       return this.done = true;
-    };
-    return EyeREPL;
-  })();
-  History = (function() {
-    function History() {
-      var i;
-      this.lines = [];
-      for (i = 1; i <= 5; i++) {
-        this.add("");
-      }
     }
-    History.prototype.add = function() {
-      var lines, _ref;
-      lines = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return (_ref = this.lines).unshift.apply(_ref, lines);
-    };
-    History.prototype.toString = function() {
-      return this.lines.join("\n");
-    };
-    return History;
-  })();
-  try {
-    repl = new EyeREPL;
-    repl.start();
-  } catch (error) {
-    alert("Internal error:\n" + error.message);
-  }
+  };
+
 }).call(this);
