@@ -137,10 +137,28 @@
             })()).join(",\n") + ("\n" + (space(i)) + "}");
           }
           break;
-        default:
+        case "node":
+          return Object.prototype.toString.apply(o);
+        case "object":
           if (Object.keys(o).length === 0) {
             return "{}";
-          } else if (i <= 2) {
+          }
+          break;
+        case "object":
+          if (i <= 3) {
+            return "{\n" + ((function() {
+              var _results;
+              _results = [];
+              for (k in o) {
+                v = o[k];
+                _results.push("" + (space(i + 1)) + k + ": " + (dump(v, i + 1)));
+              }
+              return _results;
+            })()).join(",\n") + ("\n" + (space(i)) + "}");
+          }
+          break;
+        default:
+          if (i <= 1) {
             return "{\n" + ((function() {
               var _results;
               _results = [];

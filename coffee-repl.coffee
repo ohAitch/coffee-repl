@@ -59,10 +59,12 @@ class REPL
       when "date"                                            then JSON.stringify(o)
       when "array"  then if i <= 3                           then "["+(dump(v) for v in o).join(", ")+"]"
       when "node"   then if i <= 1                           then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
+      when "node"                                            then Object.prototype.toString.apply(o)
+      when "object" then if Object.keys(o).length is 0       then "{}"
+      when "object" then if i <= 3                           then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
       else
-        if      Object.keys(o).length is 0           then "{}"
-        else if i <= 2                               then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
-        else                                              Object.prototype.toString.apply(o)
+        if i <= 1                                            then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
+        else                                                      Object.prototype.toString.apply(o)
   space = (i)->
     [0..i].map(->"").join("  ")
   type = (o)->
