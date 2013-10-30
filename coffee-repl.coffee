@@ -55,7 +55,7 @@ class REPL
   dump = (o, i=0) ->
     switch type(o)
       when "null", "number", "boolean", "undefined" then ""+o
-      when "function"                               then (""+o).split("{")[0]+"{ [native code] }"
+      when "function"                               then (""+o)#.split("{")[0]+"{ [native code] }"
       when "date","string"                          then JSON.stringify(o)
       when "array"  then if i <= 3                  then "["+(dump(v) for v in o).join(", ")+"]"
       else
