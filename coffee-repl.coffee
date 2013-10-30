@@ -8,6 +8,7 @@ else
 
 class REPL
   constructor: ->
+    window.coffee_repl = @
     @done = false
     @history =
       inputs: []
@@ -34,8 +35,7 @@ class REPL
     catch err
       ""+err
   print: (input, output) ->
-    for v,i in @history.inputs
-      "coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n"
+    "coffee>_\n"+("coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n" for v,i in @history.inputs).join("")
   dump = (o, i=0) ->
     switch type(o)
       when "null", "number", "boolean", "undefined" then ""+o

@@ -19,6 +19,7 @@
     var dump, space, type;
 
     function REPL() {
+      window.coffee_repl = this;
       this.done = false;
       this.history = {
         inputs: [],
@@ -70,14 +71,17 @@
     };
 
     REPL.prototype.print = function(input, output) {
-      var i, v, _i, _len, _ref, _results;
-      _ref = this.history.inputs;
-      _results = [];
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        v = _ref[i];
-        _results.push("coffee> " + this.history.inputs[i] + "\n" + (dump(this.history.outputs[i])) + "\n");
-      }
-      return _results;
+      var i, v;
+      return "coffee>_\n" + ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.history.inputs;
+        _results = [];
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          v = _ref[i];
+          _results.push("coffee> " + this.history.inputs[i] + "\n" + (dump(this.history.outputs[i])) + "\n");
+        }
+        return _results;
+      }).call(this)).join("");
     };
 
     dump = function(o, i) {
