@@ -12,7 +12,7 @@ Simple CoffeeScript REPL Bookmarklet for Safari on iOS
 ### exit
     coffee> exit
 
-### $0,$1,$2,$3,$4
+### $0,$1,$2
     coffee> "foo"
     "foo"
     coffee> $0 is "foo"

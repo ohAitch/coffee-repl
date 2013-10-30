@@ -19,7 +19,6 @@
     var dump, space, type;
 
     function REPL() {
-      window.eye_repl = this;
       this.done = false;
       this.history = {
         inputs: [],
@@ -30,10 +29,8 @@
           window.$0 = this.outputs[0];
           window.$1 = this.outputs[1];
           window.$2 = this.outputs[2];
-          window.$3 = this.outputs[3];
-          window.$4 = this.outputs[4];
-          if (this.inputs.length > 5) {
-            return this.inputs.length = this.outputs.length = 5;
+          if (this.inputs.length > 3) {
+            return this.inputs.length = this.outputs.length = 3;
           }
         }
       };
@@ -44,7 +41,6 @@
         _this = this;
       input = this.read();
       output = this["eval"](input);
-      console.log(output);
       this.history.add(input, output);
       if (!this.done) {
         return setTimeout(function() {
@@ -79,7 +75,7 @@
       _results = [];
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         v = _ref[i];
-        _results.push("coffee> " + this.history.inputs[i] + "\n" + (dump(this.history.outputs[i])));
+        _results.push("coffee> " + this.history.inputs[i] + "\n" + (dump(this.history.outputs[i])) + "\n");
       }
       return _results;
     };

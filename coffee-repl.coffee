@@ -18,13 +18,10 @@ class REPL
         window.$0 = @outputs[0]
         window.$1 = @outputs[1]
         window.$2 = @outputs[2]
-        window.$3 = @outputs[3]
-        window.$4 = @outputs[4]
-        if @inputs.length > 5 then @inputs.length = @outputs.length = 5
+        if @inputs.length > 3 then @inputs.length = @outputs.length = 3
   loop: ->
     input = @read()
     output = @eval(input)
-    console.log output
     @history.add(input, output)
     if !@done then setTimeout => @loop()
   read: -> prompt @print()
@@ -38,7 +35,7 @@ class REPL
       ""+err
   print: (input, output) ->
     for v,i in @history.inputs
-      "coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}"
+      "coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n"
   dump = (o, i=0) ->
     switch type(o)
       when "null", "number", "boolean", "undefined" then ""+o
