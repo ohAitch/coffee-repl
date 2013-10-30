@@ -54,15 +54,15 @@ class REPL
     "coffee> \n"+("coffee> #{@history.inputs[i]}\n#{dump(@history.outputs[i])}\n" for v,i in @history.inputs).join("")
   dump = (o, i=0) ->
     switch type(o)
-      when "null", "number", "boolean", "undefined" then ""+o
-      when "function"                               then (""+o)#.split("{")[0]+"{ [native code] }"
-      when "date","string"                          then JSON.stringify(o)
-      when "array"  then if i <= 3                  then "["+(dump(v) for v in o).join(", ")+"]"
+      when "null", "number", "boolean", "undefined","string" then ""+o
+      when "function"                                        then (""+o)#.split("{")[0]+"{ [native code] }"
+      when "date"                                            then JSON.stringify(o)
+      when "array"  then if i <= 3                           then "["+(dump(v) for v in o).join(", ")+"]"
+      when "node"   then if i <= 1                           then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
       else
-        if i <= 2
-          if Object.keys(o).length is 0 then "{}"
-          else                               "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
-        else                                 Object.prototype.toString.apply(o)
+        if      Object.keys(o).length is 0           then "{}"
+        else if i <= 2                               then "{\n"+("#{space(i+1)}#{k}: #{dump(v, i+1)}" for k, v of o).join(",\n")+"\n#{space(i)}}"
+        else                                              Object.prototype.toString.apply(o)
   space = (i)->
     [0..i].map(->"").join("  ")
   type = (o)->

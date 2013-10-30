@@ -105,11 +105,11 @@
         case "number":
         case "boolean":
         case "undefined":
+        case "string":
           return "" + o;
         case "function":
-          return ("" + o).split("{")[0] + "{ [native code] }";
+          return "" + o;
         case "date":
-        case "string":
           return JSON.stringify(o);
         case "array":
           if (i <= 3) {
@@ -124,21 +124,32 @@
             })()).join(", ") + "]";
           }
           break;
+        case "node":
+          if (i <= 1) {
+            return "{\n" + ((function() {
+              var _results;
+              _results = [];
+              for (k in o) {
+                v = o[k];
+                _results.push("" + (space(i + 1)) + k + ": " + (dump(v, i + 1)));
+              }
+              return _results;
+            })()).join(",\n") + ("\n" + (space(i)) + "}");
+          }
+          break;
         default:
-          if (i <= 2) {
-            if (Object.keys(o).length === 0) {
-              return "{}";
-            } else {
-              return "{\n" + ((function() {
-                var _results;
-                _results = [];
-                for (k in o) {
-                  v = o[k];
-                  _results.push("" + (space(i + 1)) + k + ": " + (dump(v, i + 1)));
-                }
-                return _results;
-              })()).join(",\n") + ("\n" + (space(i)) + "}");
-            }
+          if (Object.keys(o).length === 0) {
+            return "{}";
+          } else if (i <= 2) {
+            return "{\n" + ((function() {
+              var _results;
+              _results = [];
+              for (k in o) {
+                v = o[k];
+                _results.push("" + (space(i + 1)) + k + ": " + (dump(v, i + 1)));
+              }
+              return _results;
+            })()).join(",\n") + ("\n" + (space(i)) + "}");
           } else {
             return Object.prototype.toString.apply(o);
           }
