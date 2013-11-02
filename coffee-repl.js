@@ -60,7 +60,7 @@
       } else if (/\s$/.test(input)) {
         _ref = autocomplete(input, this.env), pre = _ref[0], ary = _ref[1];
         if (ary.length === 1) {
-          this.defaultInput = pre + " " + ary[0];
+          this.defaultInput = (pre + " " + ary[0]).replace(/^\s+/, "");
         } else {
           this.defaultInput = input.replace(/\s+$/, "");
           this.printlogs.unshift("coffee> " + input + "\n" + (ary.join("\n")) + "\n");

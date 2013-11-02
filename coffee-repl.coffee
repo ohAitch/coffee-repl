@@ -54,7 +54,7 @@ class window.REPL
     else if /\s$/.test(input)
       [pre, ary] = autocomplete(input, @env)
       if ary.length is 1
-        @defaultInput = pre+" "+ary[0]
+        @defaultInput = (pre+" "+ary[0]).replace(/^\s+/,"")
       else
         @defaultInput = input.replace(/\s+$/,"")
         @printlogs.unshift("coffee> #{input}\n#{ary.join("\n")}\n")
