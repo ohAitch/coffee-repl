@@ -84,8 +84,9 @@ _eval = (code, env={})->
     CoffeeScript.compile(
       "return do->\n  "+code.split("\n").join("\n  ")
       , {bare:true}))).apply(window, oprs)
+###
 console.assert(_eval("do->window") is window, "_eval")
-
+###
 getPropertys = (o)->
   if !o? then return []
   ary = [].concat Object.getOwnPropertyNames(o), (key for key of o)
@@ -94,8 +95,9 @@ getPropertys = (o)->
     if tmp[key]? then false
     else              tmp[key] = true
   _ary.sort()
+###
 console.assert(""+getPropertys({a:0}) is ""+getPropertys(Object.create({a:0})), "getPropertys")
-
+###
 suggest = (code, token, env={})->
   reg = new RegExp("^#{token}.*")
   try
@@ -103,10 +105,11 @@ suggest = (code, token, env={})->
   catch err
     result = {}
   getPropertys(result).filter (key)-> reg.test(key)
+###
 console.assert(suggest("window", "conso")[0] is "console", "suggest conso")
 console.assert(suggest("console", "lo")[0]   is "log",     "suggest console.lo")
 console.assert(suggest("Math", "p")[0]       is "pow",     "suggest Math.p")
-
+###
 autocomplete = (code, env={})->
   tokens = (code+" ").split(/\s+/).slice(0, -1)
   token = tokens.pop()
@@ -121,13 +124,14 @@ autocomplete = (code, env={})->
     result = suggest(obj, key, env).map (str)->
       obj+"."+str.replace(/\s+$/,"")
   [pre, result]
+###
 console.assert(autocomplete("conso")[0]         is "" and
                autocomplete("conso")[1][0]      is "console",      "autocomplete conso")
 console.assert(autocomplete("console.lo")[0]    is "" and
                autocomplete("console.lo")[1][0] is "console.log",  "autocomplete console.lo")
 console.assert(autocomplete("if {a:0}.")[0]     is "if"
                autocomplete("if {a:0}.")[1][0]  is "{a:0}.a",      "autocomplete {a:0}.")
-
+###
 type = (o)->
   if      o is null              then "null"
   else if o is undefined         then "undefined"
@@ -141,6 +145,7 @@ type = (o)->
     (/^\[object (\w+)\]$/.exec(_type)   or
           /^\s*function\s+(\w+)/.exec(_type) or
           ["", ""])[1].toLowerCase()
+###
 console.assert(type(null)      is "null",      "type null")
 console.assert(type(undefined) is "undefined", "type undefined")
 console.assert(type(true)      is "boolean",   "type boolean")
@@ -155,11 +160,12 @@ console.assert(type(/0/)       is "regexp",    "type regexp")
 console.assert(type(window)    is "global",    "type global")
 console.assert(type(document.body) is "node",  "type node")
 console.assert(type(new (class Foo)) is "foo", "type foo")
-
+###
 space = (i)-> [0..i].map(->"").join("  ")
+###
 console.assert(space(0) is "",   "space 0")
 console.assert(space(1) is "  ", "space 1")
-
+###
 dir = (o, max=1, i=0) ->
   dumpObj = (o)->
     if getPropertys(o).length is 0 then "{}"
@@ -175,7 +181,8 @@ dir = (o, max=1, i=0) ->
     else
       if i < max                                   then dumpObj(o)
       else                                              Object.prototype.toString.call(o)
+###
 console.assert(dir({a:0}) is dir(Object.create({a:0})), "dir")
-
-if !CoffeeScript? then include "http://coffeescript.org/extras/coffee-script.js", -> (new REPL).start()
-else                   setTimeout -> (new REPL).start()
+###
+if window.CoffeeScript? then setTimeout -> (new REPL).start()
+else                         include "https://dl.dropboxusercontent.com/u/265158/coffee-script.js", -> (new REPL).start()
