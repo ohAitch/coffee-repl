@@ -16,6 +16,10 @@ Simple CoffeeScript REPL Bookmarklet for Safari on iOS
 
     word[space][OK] / autocomplete 
 
+## todo
+- livescript and prelude support
+- jquery, and underscore support
+
 ## original
 
 https://github.com/yjerem/eye-repl
