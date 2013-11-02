@@ -26,6 +26,9 @@ class window.REPL
       .help / Show repl options
       .1 / last input
       .n / nth input
+      .jQuery / include("jQuery.js")
+      .underscore / include("underscore.js")
+      .prototype / include("prototype.js")
 
       word[space][OK] / autocomplete 
 
@@ -49,6 +52,18 @@ class window.REPL
       @printlogs.unshift("coffee> #{input}\n\n")
     else if /\.help$/.test(input)
       @printlogs.unshift("coffee> #{input}\n#{@help}\n")
+    else if /\.jQuery$/.test(input)
+      @printlogs.unshift("coffee> #{input}\n\n")
+      @run = false
+      include "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", => @start()
+    else if /\.underscore$/.test(input)
+      @printlogs.unshift("coffee> #{input}\n\n")
+      @run = false
+      include "http://underscorejs.org/underscore-min.js", => @start()
+    else if /\.prototype$/.test(input)
+      @printlogs.unshift("coffee> #{input}\n\n")
+      @run = false
+      include "//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js", => @start()
     else if n = (/\.(\d+)$/.exec(input) or [false, false])[1]
       @defaultInput = @history[n]
     else if /\s$/.test(input)

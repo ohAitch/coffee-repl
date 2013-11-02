@@ -1,4 +1,4 @@
-# eye-repl
+# coffee-repl
 
 Simple CoffeeScript REPL Bookmarklet for Safari on iOS
 
@@ -13,12 +13,14 @@ Simple CoffeeScript REPL Bookmarklet for Safari on iOS
     .help / Show repl options
     .1 / last input
     .n / nth input
+    .jQuery / include("jQuery.js")
+    .underscore / include("underscore.js")
+    .prototype / include("prototype.js")
 
     word[space][OK] / autocomplete 
 
 ## todo
-- livescript and prelude support
-- jquery, and underscore support
+- LiveScript and prelude.js support
 
 ## original
 

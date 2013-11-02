@@ -36,7 +36,7 @@
       this.defaultInput = "";
     }
 
-    REPL.prototype.help = ".exit / Exit the REPL\n.help / Show repl options\n.1 / last input\n.n / nth input\n\nword[space][OK] / autocomplete \n\nlog(str)\nclear()\ndir(obj [, maxCallNum])\ntype(obj)\ninclude(url)\n$_";
+    REPL.prototype.help = ".exit / Exit the REPL\n.help / Show repl options\n.1 / last input\n.n / nth input\n.jQuery / include(\"jQuery.js\")\n.underscore / include(\"underscore.js\")\n.prototype / include(\"prototype.js\")\n\nword[space][OK] / autocomplete \n\nlog(str)\nclear()\ndir(obj [, maxCallNum])\ntype(obj)\ninclude(url)\n$_";
 
     REPL.prototype.start = function() {
       this.run = true;
@@ -55,6 +55,24 @@
         this.printlogs.unshift("coffee> " + input + "\n\n");
       } else if (/\.help$/.test(input)) {
         this.printlogs.unshift("coffee> " + input + "\n" + this.help + "\n");
+      } else if (/\.jQuery$/.test(input)) {
+        this.printlogs.unshift("coffee> " + input + "\n\n");
+        this.run = false;
+        include("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", function() {
+          return _this.start();
+        });
+      } else if (/\.underscore$/.test(input)) {
+        this.printlogs.unshift("coffee> " + input + "\n\n");
+        this.run = false;
+        include("http://underscorejs.org/underscore-min.js", function() {
+          return _this.start();
+        });
+      } else if (/\.prototype$/.test(input)) {
+        this.printlogs.unshift("coffee> " + input + "\n\n");
+        this.run = false;
+        include("//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js", function() {
+          return _this.start();
+        });
       } else if (n = (/\.(\d+)$/.exec(input) || [false, false])[1]) {
         this.defaultInput = this.history[n];
       } else if (/\s$/.test(input)) {
