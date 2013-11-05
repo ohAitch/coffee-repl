@@ -13,7 +13,7 @@ Simple CoffeeScript REPL Bookmarklet for Safari on iOS
     .help / Show repl options
     .1 / last input
     .n / nth input
-    .jQuery / include("jQuery.js")
+    .jquery / include("jQuery.js")
     .underscore / include("underscore.js")
     .prototype / include("prototype.js")
 

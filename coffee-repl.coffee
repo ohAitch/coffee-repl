@@ -26,7 +26,7 @@ class window.REPL
       .help / Show repl options
       .1 / last input
       .n / nth input
-      .jQuery / include("jQuery.js")
+      .jquery / include("jQuery.js")
       .underscore / include("underscore.js")
       .prototype / include("prototype.js")
 
@@ -159,7 +159,7 @@ type = (o)->
       _type = ""+o.constructor
     (/^\[object (\w+)\]$/.exec(_type)   or
           /^\s*function\s+(\w+)/.exec(_type) or
-          ["", ""])[1].toLowerCase()
+          ["", "object"])[1].toLowerCase()
 ###
 console.assert(type(null)      is "null",      "type null")
 console.assert(type(undefined) is "undefined", "type undefined")

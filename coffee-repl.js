@@ -36,7 +36,7 @@
       this.defaultInput = "";
     }
 
-    REPL.prototype.help = ".exit / Exit the REPL\n.help / Show repl options\n.1 / last input\n.n / nth input\n.jQuery / include(\"jQuery.js\")\n.underscore / include(\"underscore.js\")\n.prototype / include(\"prototype.js\")\n\nword[space][OK] / autocomplete \n\nlog(str)\nclear()\ndir(obj [, maxCallNum])\ntype(obj)\ninclude(url)\n$_";
+    REPL.prototype.help = ".exit / Exit the REPL\n.help / Show repl options\n.1 / last input\n.n / nth input\n.jquery / include(\"jQuery.js\")\n.underscore / include(\"underscore.js\")\n.prototype / include(\"prototype.js\")\n\nword[space][OK] / autocomplete \n\nlog(str)\nclear()\ndir(obj [, maxCallNum])\ntype(obj)\ninclude(url)\n$_";
 
     REPL.prototype.start = function() {
       this.run = true;
@@ -239,7 +239,7 @@
       if (_type === "[object Object]") {
         _type = "" + o.constructor;
       }
-      return (/^\[object (\w+)\]$/.exec(_type) || /^\s*function\s+(\w+)/.exec(_type) || ["", ""])[1].toLowerCase();
+      return (/^\[object (\w+)\]$/.exec(_type) || /^\s*function\s+(\w+)/.exec(_type) || ["", "object"])[1].toLowerCase();
     }
   };
 
