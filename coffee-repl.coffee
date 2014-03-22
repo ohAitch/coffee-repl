@@ -1,4 +1,3 @@
-
 class window.REPL
   repl = null
   constructor: ->
@@ -55,7 +54,7 @@ class window.REPL
       @printlogs.unshift(begin + "\n")
     else if /\.help$/.test(input)
       @printlogs.unshift("#{begin + @help}\n")
-    else if /\.jQuery$/i.test(input)
+    else if /\.jQ(uery)$/i.test(input)
       @printlogs.unshift(begin)
       @run = false
       include "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", => @start()
@@ -79,14 +78,14 @@ class window.REPL
         @defaultInput = (pre+" "+ary[0]).replace(/^\s+/,"")
       else
         @defaultInput = input.replace(/\s+$/,"")
-        @printlogs.unshift("#{@prompt + ary.join("\n")}\n")
+        @printlogs.unshift("#{begin + ary.join("\n")}\n")
     else
       @history.unshift(input)
       try
         @env.$_ = _eval(input, @env)
       catch err
         @env.$_ = ""+err
-      @printlogs.unshift("#{@prompt + @printbuffer}#{dir(@env.$_)}")
+      @printlogs.unshift("#{begin + @printbuffer}#{dir(@env.$_)}")
       @printbuffer = ""
     console.log @printlogs[0]
     @printlogs.length = 5
