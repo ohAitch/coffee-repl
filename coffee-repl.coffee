@@ -29,6 +29,7 @@ class window.REPL
       .jquery / include("jQuery.js")
       .underscore / include("underscore.js")
       .prototype / include("prototype.js")
+      .livescript / include("livescript.js")
 
       word[space][OK] / autocomplete 
 
@@ -44,7 +45,6 @@ class window.REPL
     @loop()
   loop: -> # Void -> Void
     input = prompt(@printlogs.join("\n"), @defaultInput) or ".exit"
-    @history.unshift(input)
     console.log input
     @defaultInput = ""
     if /\.exit$/.test(input)
@@ -64,6 +64,10 @@ class window.REPL
       @printlogs.unshift("coffee> #{input}\n\n")
       @run = false
       include "//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js", => @start()
+    else if /\.livescript$/.test(input)
+      @printlogs.unshift("coffee> #{input}\n\n")
+      @run = false
+      include "http://livescript.net/livescript-1.2.0.js", => @start()
     else if n = (/\.(\d+)$/.exec(input) or [false, false])[1]
       @defaultInput = @history[n]
     else if /\s$/.test(input)
@@ -74,6 +78,7 @@ class window.REPL
         @defaultInput = input.replace(/\s+$/,"")
         @printlogs.unshift("coffee> #{input}\n#{ary.join("\n")}\n")
     else
+      @history.unshift(input)
       try
         @env.$_ = _eval(input, @env)
       catch err
