@@ -205,4 +205,4 @@ dir = (o, max=1, i=0) ->
 console.assert(dir({a:0}) is dir(Object.create({a:0})), "dir")
 ###
 if window.CoffeeScript? then setTimeout -> (new REPL).start()
-else                         include "https://dl.dropboxusercontent.com/u/265158/coffee-script.js", -> (new REPL).start()
+else                         include "http://coffeescript.org/extras/coffee-script.js", -> (new REPL).start()
