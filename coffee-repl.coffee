@@ -1,3 +1,4 @@
+
 class window.REPL
   repl = null
   constructor: ->
@@ -21,12 +22,13 @@ class window.REPL
     @printbuffer = ""
     @printlogs = ["", "", "", "", ""]
     @defaultInput = ""
+    @prompt = "coffee> "
   help: """
       .exit / Exit the REPL
       .help / Show repl options
-      .1 / last input
+      . / last input
       .n / nth input
-      .jquery / include("jQuery.js")
+      .jQuery / include("jQuery.js")
       .underscore / include("underscore.js")
       .prototype / include("prototype.js")
       .livescript / include("livescript.js")
@@ -47,43 +49,44 @@ class window.REPL
     input = prompt(@printlogs.join("\n"), @defaultInput) or ".exit"
     console.log input
     @defaultInput = ""
+    begin = @prompt + input + "\n"
     if /\.exit$/.test(input)
       @run = false
-      @printlogs.unshift("coffee> #{input}\n\n")
+      @printlogs.unshift(begin + "\n")
     else if /\.help$/.test(input)
-      @printlogs.unshift("coffee> #{input}\n#{@help}\n")
-    else if /\.jQuery$/.test(input)
-      @printlogs.unshift("coffee> #{input}\n\n")
+      @printlogs.unshift("#{begin + @help}\n")
+    else if /\.jQuery$/i.test(input)
+      @printlogs.unshift(begin)
       @run = false
       include "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", => @start()
-    else if /\.underscore$/.test(input)
-      @printlogs.unshift("coffee> #{input}\n\n")
+    else if /\.underscore$/i.test(input)
+      @printlogs.unshift(begin)
       @run = false
       include "http://underscorejs.org/underscore-min.js", => @start()
-    else if /\.prototype$/.test(input)
-      @printlogs.unshift("coffee> #{input}\n\n")
+    else if /\.prototype$/i.test(input)
+      @printlogs.unshift(begin)
       @run = false
       include "//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js", => @start()
-    else if /\.livescript$/.test(input)
-      @printlogs.unshift("coffee> #{input}\n\n")
+    else if /\.livescript$/i.test(input)
+      @printlogs.unshift(begin)
       @run = false
       include "http://livescript.net/livescript-1.2.0.js", => @start()
-    else if n = (/\.(\d+)$/.exec(input) or [false, false])[1]
-      @defaultInput = @history[n]
+    else if false != n = (/\.(\d*)$/.exec(input) or [false, false])[1] 
+      @defaultInput = @history[n or 0]
     else if /\s$/.test(input)
       [pre, ary] = autocomplete(input, @env)
       if ary.length is 1
         @defaultInput = (pre+" "+ary[0]).replace(/^\s+/,"")
       else
         @defaultInput = input.replace(/\s+$/,"")
-        @printlogs.unshift("coffee> #{input}\n#{ary.join("\n")}\n")
+        @printlogs.unshift("#{@prompt + ary.join("\n")}\n")
     else
       @history.unshift(input)
       try
         @env.$_ = _eval(input, @env)
       catch err
         @env.$_ = ""+err
-      @printlogs.unshift("coffee> #{input}\n#{@printbuffer}#{dir(@env.$_)}")
+      @printlogs.unshift("#{@prompt + @printbuffer}#{dir(@env.$_)}")
       @printbuffer = ""
     console.log @printlogs[0]
     @printlogs.length = 5
