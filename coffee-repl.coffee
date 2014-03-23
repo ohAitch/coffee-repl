@@ -1,4 +1,4 @@
-class window.REPL
+unless REPL? then class window.REPL
   repl = null
   constructor: ->
     if repl? then return repl
@@ -66,10 +66,13 @@ class window.REPL
       @printlogs.unshift(begin)
       @run = false
       include "//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js", => @start()
-    else if /\.livescript$/i.test(input)
+    else if /\.live(script)?$/i.test(input)
       @printlogs.unshift(begin)
       @run = false
-      include "http://livescript.net/livescript-1.2.0.js", => @start()
+      include "http://livescript.net/livescript-1.2.0.js", =>
+        CoffeeScript.compile = LiveScript.compile
+        @prompt = "live> "
+        @start()
     else if false != n = (/\.(\d*)$/.exec(input) or [false, false])[1] 
       @defaultInput = @history[n or 0]
     else if /\s$/.test(input)
